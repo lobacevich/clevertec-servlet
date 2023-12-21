@@ -68,10 +68,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void deleteUser(User user, Connection connection) {
+    public boolean deleteUser(Long userId, Connection connection) {
         try (PreparedStatement ps = connection.prepareStatement(DELETE_USER)) {
-            ps.setLong(1, user.getId());
-            ps.executeUpdate();
+            ps.setLong(1, userId);
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataBaseException("DB failed: Can't delete user");
         }

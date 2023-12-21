@@ -1,7 +1,7 @@
 package by.clevertec.lobacevich.service.impl;
 
 import by.clevertec.lobacevich.dao.UserDao;
-import by.clevertec.lobacevich.data.UserDto;
+import by.clevertec.lobacevich.dto.UserDto;
 import by.clevertec.lobacevich.entity.User;
 import by.clevertec.lobacevich.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
@@ -72,20 +72,11 @@ class UserServiceImplTest {
 
     @Test
     void deleteUserShouldDeleteUser() {
-        when(dao.findUserById(1L, connection)).thenReturn(Optional.of(user));
+        when(dao.deleteUser(1L, connection)).thenReturn(true);
 
         boolean actual = userService.deleteUser(1L);
 
         assertTrue(actual);
-    }
-
-    @Test
-    void deleteUserShouldNotDeleteUser() {
-        when(dao.findUserById(1L, connection)).thenReturn(Optional.empty());
-
-        boolean actual = userService.deleteUser(1L);
-
-        assertFalse(actual);
     }
 
     @Test

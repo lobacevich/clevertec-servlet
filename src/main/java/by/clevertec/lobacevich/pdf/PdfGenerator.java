@@ -1,6 +1,6 @@
 package by.clevertec.lobacevich.pdf;
 
-import by.clevertec.lobacevich.data.UserDto;
+import by.clevertec.lobacevich.dto.UserDto;
 
 public interface PdfGenerator {
 

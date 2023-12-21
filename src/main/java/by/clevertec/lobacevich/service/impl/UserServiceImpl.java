@@ -2,7 +2,7 @@ package by.clevertec.lobacevich.service.impl;
 
 import by.clevertec.lobacevich.dao.UserDao;
 import by.clevertec.lobacevich.dao.impl.UserDaoImpl;
-import by.clevertec.lobacevich.data.UserDto;
+import by.clevertec.lobacevich.dto.UserDto;
 import by.clevertec.lobacevich.db.Connect;
 import by.clevertec.lobacevich.entity.User;
 import by.clevertec.lobacevich.mapper.UserMapper;
@@ -54,13 +54,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean deleteUser(Long id) {
-        Optional<User> userOptional = dao.findUserById(id, connection);
-        if (userOptional.isEmpty()) {
-            return false;
-        } else {
-            dao.deleteUser(userOptional.get(), connection);
-            return true;
-        }
+        return dao.deleteUser(id, connection);
     }
 
     /***

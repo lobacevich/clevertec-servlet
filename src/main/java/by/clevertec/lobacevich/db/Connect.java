@@ -21,9 +21,10 @@ public class Connect {
         USERNAME = data.get("Connect.username");
         PASSWORD = data.get("Connect.password");
         try {
+            Class.forName("org.postgresql.Driver");
             CONNECTION = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new ConnectionException("Connection failed");
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new ConnectionException("Connection failed" + e);
         }
     }
 

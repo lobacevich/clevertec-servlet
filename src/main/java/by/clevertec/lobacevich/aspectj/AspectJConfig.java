@@ -4,7 +4,7 @@ import by.clevertec.lobacevich.cache.Cache;
 import by.clevertec.lobacevich.cache.factory.CacheFactory;
 import by.clevertec.lobacevich.cache.factory.impl.LFUCacheFactory;
 import by.clevertec.lobacevich.cache.factory.impl.LRUCacheFactory;
-import by.clevertec.lobacevich.data.UserDto;
+import by.clevertec.lobacevich.dto.UserDto;
 import by.clevertec.lobacevich.entity.User;
 import by.clevertec.lobacevich.exception.YamlReaderException;
 import by.clevertec.lobacevich.pdf.PdfGenerator;
@@ -78,7 +78,7 @@ public class AspectJConfig {
         Object[] args = joinPoint.getArgs();
         validator.validateToCreate((UserDto) args[0]);
         Object result = joinPoint.proceed();
-        pdfGenerator.createPdf((UserDto) result);
+//        pdfGenerator.createPdf((UserDto) result);
         return result;
     }
 
@@ -86,14 +86,14 @@ public class AspectJConfig {
     public Object serviceUpdateUser(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
         validator.validateToUpdate((UserDto) args[0]);
-        pdfGenerator.createPdf((UserDto) args[0]);
+//        pdfGenerator.createPdf((UserDto) args[0]);
         return joinPoint.proceed();
     }
 
     @Around("execution(* by.clevertec.lobacevich.service.impl.UserServiceImpl.findUserById(..))")
     public Object serviceFindUserById(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = joinPoint.proceed();
-        pdfGenerator.createPdf((UserDto) result);
+//        pdfGenerator.createPdf((UserDto) result);
         return result;
     }
 }

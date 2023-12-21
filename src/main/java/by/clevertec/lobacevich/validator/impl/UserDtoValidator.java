@@ -1,6 +1,6 @@
 package by.clevertec.lobacevich.validator.impl;
 
-import by.clevertec.lobacevich.data.UserDto;
+import by.clevertec.lobacevich.dto.UserDto;
 import by.clevertec.lobacevich.exception.ValidationException;
 import by.clevertec.lobacevich.validator.Validator;
 

@@ -1,6 +1,6 @@
 package by.clevertec.lobacevich.pdf.impl;
 
-import by.clevertec.lobacevich.data.UserDto;
+import by.clevertec.lobacevich.dto.UserDto;
 import by.clevertec.lobacevich.exception.PdfException;
 import by.clevertec.lobacevich.pdf.PdfGenerator;
 import com.itextpdf.kernel.pdf.PdfDocument;
