@@ -12,7 +12,7 @@ public interface UserDao {
 
     boolean updateUser(User user, Connection connection);
 
-    void deleteUser(User user, Connection connection);
+    boolean deleteUser(Long userId, Connection connection);
 
     Optional<User> findUserById(Long id, Connection connection);
 

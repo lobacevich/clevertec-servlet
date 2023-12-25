@@ -1,6 +1,6 @@
 package by.clevertec.lobacevich.validator;
 
-import by.clevertec.lobacevich.data.UserDto;
+import by.clevertec.lobacevich.dto.UserDto;
 
 public interface Validator {
 

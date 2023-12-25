@@ -1,6 +1,6 @@
 package by.clevertec.lobacevich.pdf.impl;
 
-import by.clevertec.lobacevich.data.UserDto;
+import by.clevertec.lobacevich.dto.UserDto;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -11,13 +11,8 @@ public class PdfTestData {
     public static final String OUTPUT_PATH = "src/main/resources/pdf/" + LocalDate.now();
 
     public static UserDto getUserDto() {
-        return UserDto.builder()
-                .id(1)
-                .firstname("Alex")
-                .lastname("Murfhy")
-                .dateOfBirth(LocalDate.of(1997, 05, 17))
-                .email("1234@gmail.com")
-                .build();
+        return new UserDto(1, "Alex", "Murfhy",
+                LocalDate.of(1997, 05, 17), "1234@gmail.com");
     }
 
     public static String[] getData() {

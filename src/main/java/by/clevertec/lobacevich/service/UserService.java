@@ -1,6 +1,6 @@
 package by.clevertec.lobacevich.service;
 
-import by.clevertec.lobacevich.data.UserDto;
+import by.clevertec.lobacevich.dto.UserDto;
 
 import java.util.List;
 

@@ -1,12 +1,14 @@
-package by.clevertec.lobacevich.data;
+package by.clevertec.lobacevich.dto;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
 
     private Integer id;
