@@ -1,5 +1,6 @@
 package by.clevertec.lobacevich.util;
 
+import lombok.Getter;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
@@ -7,14 +8,16 @@ import java.util.Map;
 
 public class YamlReader {
 
+    @Getter
+    private static final Map<String, String> data;
     private static final String PATH = "application.yml";
 
-    private YamlReader() {
-    }
-
-    public static Map<String, String> getData() {
+    static {
         InputStream in = YamlReader.class.getClassLoader().getResourceAsStream(PATH);
         Yaml yaml = new Yaml();
-        return yaml.load(in);
+        data = yaml.load(in);
+    }
+
+    private YamlReader() {
     }
 }

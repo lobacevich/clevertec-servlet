@@ -2,23 +2,27 @@ package by.clevertec.lobacevich.service.impl;
 
 import by.clevertec.lobacevich.dao.UserDao;
 import by.clevertec.lobacevich.dao.impl.UserDaoImpl;
+import by.clevertec.lobacevich.db.ConnectionPool;
 import by.clevertec.lobacevich.dto.UserDto;
-import by.clevertec.lobacevich.db.Connect;
 import by.clevertec.lobacevich.entity.User;
+import by.clevertec.lobacevich.exception.ConnectionException;
 import by.clevertec.lobacevich.mapper.UserMapper;
 import by.clevertec.lobacevich.mapper.UserMapperImpl;
 import by.clevertec.lobacevich.service.UserService;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
 
     public static final UserServiceImpl INSTANCE = new UserServiceImpl();
-    private Connection connection = Connect.getConnection();
+    private DataSource dataSource = ConnectionPool.getDataSource();
     private UserDao dao = UserDaoImpl.getInstance();
     private UserMapper mapper = new UserMapperImpl();
+    public static final String CONNECTION_FAILED = "Connection failed:";
 
     private UserServiceImpl() {
     }
@@ -34,7 +38,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDto createUser(UserDto userDto) {
-        return mapper.toUserDto(dao.createUser(mapper.toUser(userDto), connection));
+        try (Connection connection = dataSource.getConnection()) {
+            return mapper.toUserDto(dao.createUser(mapper.toUser(userDto), connection));
+        } catch (SQLException e) {
+            throw new ConnectionException(CONNECTION_FAILED + e.getMessage());
+        }
     }
 
     /***
@@ -44,7 +52,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean updateUser(UserDto userDto) {
-        return dao.updateUser(mapper.toUser(userDto), connection);
+        try (Connection connection = dataSource.getConnection()) {
+            return dao.updateUser(mapper.toUser(userDto), connection);
+        } catch (SQLException e) {
+            throw new ConnectionException(CONNECTION_FAILED + e.getMessage());
+        }
     }
 
     /***
@@ -54,7 +66,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean deleteUser(Long id) {
-        return dao.deleteUser(id, connection);
+        try (Connection connection = dataSource.getConnection()) {
+            return dao.deleteUser(id, connection);
+        } catch (SQLException e) {
+            throw new ConnectionException(CONNECTION_FAILED + e.getMessage());
+        }
     }
 
     /***
@@ -64,8 +80,12 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDto findUserById(Long id) {
-        Optional<User> userOptional = dao.findUserById(id, connection);
-        return userOptional.map(user -> mapper.toUserDto(user)).orElse(null);
+        try (Connection connection = dataSource.getConnection()) {
+            Optional<User> userOptional = dao.findUserById(id, connection);
+            return userOptional.map(mapper::toUserDto).orElse(null);
+        } catch (SQLException e) {
+            throw new ConnectionException(CONNECTION_FAILED + e.getMessage());
+        }
     }
 
     /***
@@ -74,8 +94,12 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<UserDto> getAll() {
-        return dao.findAllUsers(connection).stream()
-                .map(mapper::toUserDto)
-                .toList();
+        try (Connection connection = dataSource.getConnection()) {
+            return dao.findAllUsers(connection).stream()
+                    .map(mapper::toUserDto)
+                    .toList();
+        } catch (SQLException e) {
+            throw new ConnectionException(CONNECTION_FAILED + e.getMessage());
+        }
     }
 }

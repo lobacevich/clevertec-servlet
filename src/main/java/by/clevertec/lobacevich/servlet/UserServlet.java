@@ -69,7 +69,7 @@ public class UserServlet extends HttpServlet {
             UserDto userDto = objectMapper.toUserDto(json);
             UserDto newUserDto = userService.createUser(userDto);
             String newJson = objectMapper.toJson(newUserDto);
-            resp.setStatus(200);
+            resp.setStatus(201);
             try (PrintWriter out = resp.getWriter()) {
                 out.write(newJson);
             }
@@ -83,7 +83,7 @@ public class UserServlet extends HttpServlet {
             String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
             UserDto userDto = objectMapper.toUserDto(json);
             if (userService.updateUser(userDto)) {
-                resp.setStatus(200);
+                resp.setStatus(201);
                 try (PrintWriter out = resp.getWriter()) {
                     out.write("User was updated");
                 }

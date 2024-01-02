@@ -4,13 +4,16 @@ import by.clevertec.lobacevich.dao.UserDao;
 import by.clevertec.lobacevich.dto.UserDto;
 import by.clevertec.lobacevich.entity.User;
 import by.clevertec.lobacevich.mapper.UserMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,14 +33,23 @@ class UserServiceImplTest {
     private UserDao dao;
 
     @Mock
+    private DataSource dataSource;
+
+    @Mock
     private Connection connection;
 
     @InjectMocks
     private UserServiceImpl userService;
+
     private final User user = UserServiceTestData.getUser();
     private final UserDto userDto = UserServiceTestData.getUserDto();
     private final User userIdNull = UserServiceTestData.getUserIdNull();
     private final UserDto userDtoIdNull = UserServiceTestData.getUserDtoIdNull();
+
+    @BeforeEach
+    void setUp() throws SQLException {
+        when(dataSource.getConnection()).thenReturn(connection);
+    }
 
     @Test
     void createUserShouldCreateUser() {
