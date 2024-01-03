@@ -7,8 +7,6 @@ import by.clevertec.lobacevich.cache.factory.impl.LRUCacheFactory;
 import by.clevertec.lobacevich.dto.UserDto;
 import by.clevertec.lobacevich.entity.User;
 import by.clevertec.lobacevich.exception.YamlReaderException;
-import by.clevertec.lobacevich.pdf.PdfGenerator;
-import by.clevertec.lobacevich.pdf.impl.UserPdfGenerator;
 import by.clevertec.lobacevich.util.YamlReader;
 import by.clevertec.lobacevich.validator.Validator;
 import by.clevertec.lobacevich.validator.impl.UserDtoValidator;
@@ -23,7 +21,6 @@ public class AspectJConfig {
 
     private final Cache cache = setCache();
     private final Validator validator = UserDtoValidator.getINSTANCE();
-    private final PdfGenerator pdfGenerator = UserPdfGenerator.getInstance();
 
     private Cache setCache() {
         CacheFactory cacheFactory;
@@ -48,7 +45,6 @@ public class AspectJConfig {
             result.ifPresent(cache::put);
             return result;
         }
-
     }
 
     @Around("execution(* by.clevertec.lobacevich.dao.impl.UserDaoImpl.createUser(..))")
@@ -77,23 +73,18 @@ public class AspectJConfig {
     public Object serviceCreateUser(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
         validator.validateToCreate((UserDto) args[0]);
-        Object result = joinPoint.proceed();
-//        pdfGenerator.createPdf((UserDto) result);
-        return result;
+        return joinPoint.proceed();
     }
 
     @Around("execution(* by.clevertec.lobacevich.service.impl.UserServiceImpl.updateUser(..))")
     public Object serviceUpdateUser(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
         validator.validateToUpdate((UserDto) args[0]);
-//        pdfGenerator.createPdf((UserDto) args[0]);
         return joinPoint.proceed();
     }
 
     @Around("execution(* by.clevertec.lobacevich.service.impl.UserServiceImpl.findUserById(..))")
     public Object serviceFindUserById(ProceedingJoinPoint joinPoint) throws Throwable {
-        Object result = joinPoint.proceed();
-//        pdfGenerator.createPdf((UserDto) result);
-        return result;
+        return joinPoint.proceed();
     }
 }

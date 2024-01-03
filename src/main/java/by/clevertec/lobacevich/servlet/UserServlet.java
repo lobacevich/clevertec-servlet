@@ -3,6 +3,8 @@ package by.clevertec.lobacevich.servlet;
 import by.clevertec.lobacevich.dto.UserDto;
 import by.clevertec.lobacevich.mapper.UserObjectMapper;
 import by.clevertec.lobacevich.mapper.impl.ObjectMapperJson;
+import by.clevertec.lobacevich.pdf.PdfGenerator;
+import by.clevertec.lobacevich.pdf.impl.UserPdfGenerator;
 import by.clevertec.lobacevich.service.UserService;
 import by.clevertec.lobacevich.service.impl.UserServiceImpl;
 import com.itextpdf.styledxmlparser.jsoup.internal.StringUtil;
@@ -22,6 +24,7 @@ public class UserServlet extends HttpServlet {
 
     private final UserObjectMapper objectMapper = ObjectMapperJson.getINSTANCE();
     private final UserService userService = UserServiceImpl.getInstance();
+    private final PdfGenerator pdfGenerator = UserPdfGenerator.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -46,6 +49,7 @@ public class UserServlet extends HttpServlet {
                 String json = objectMapper.toJson(userDto);
                 resp.setStatus(200);
                 resp.getWriter().write(json);
+                pdfGenerator.createPdf(userDto);
             }
         } catch (NumberFormatException e) {
             resp.setStatus(400);

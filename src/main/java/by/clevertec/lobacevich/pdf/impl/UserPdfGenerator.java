@@ -12,6 +12,7 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.properties.TextAlignment;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,7 +21,7 @@ import java.time.LocalDate;
 public class UserPdfGenerator implements PdfGenerator {
 
     private static final UserPdfGenerator INSTANCE = new UserPdfGenerator();
-    private static final String BACKGROUND_PATH = "src/main/resources/pdf/Clevertec_Template.pdf";
+    private static final String BACKGROUND_PATH = "/pdf/Clevertec_Template.pdf";
     private static final String OUTPUT_PATH_PART = "src/main/resources/pdf/";
 
     private UserPdfGenerator() {
@@ -40,12 +41,13 @@ public class UserPdfGenerator implements PdfGenerator {
         try (PdfWriter writer = new PdfWriter(outputPath);
              PdfDocument pdfDocument = new PdfDocument(writer);
              Document document = new Document(pdfDocument);
-             PdfDocument backgroundPdf = new PdfDocument(new PdfReader(BACKGROUND_PATH))) {
+             InputStream backgroundStream = getClass().getResourceAsStream(BACKGROUND_PATH);
+             PdfDocument backgroundPdf = new PdfDocument(new PdfReader(backgroundStream))) {
             document.setTopMargin(130f);
             pdfDocument.addPage(backgroundPdf.getFirstPage().copyTo(pdfDocument));
             fillDocument(document, userDto);
         } catch (IOException e) {
-            throw new PdfException("Can't create pdf");
+            throw new PdfException("Can't create pdf" + e);
         }
     }
 
@@ -53,9 +55,9 @@ public class UserPdfGenerator implements PdfGenerator {
         Path path = Paths.get(OUTPUT_PATH_PART + LocalDate.now());
         if (!Files.exists(path)) {
             try {
-                Files.createDirectory(path);
+                Files.createDirectories(path);
             } catch (IOException e) {
-                throw new PdfException("Can't create directory");
+                throw new PdfException("Can't create directory" + e);
             }
         }
     }
