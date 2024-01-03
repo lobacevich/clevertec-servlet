@@ -27,8 +27,10 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         String userId = req.getParameter("id");
+        String pageSize = req.getParameter("pagesize");
+        String pageNumber = req.getParameter("page");
         if (userId == null) {
-            getAllUsers(resp);
+            getAllUsers(resp, pageSize, pageNumber);
         } else {
             getUserById(resp, userId);
         }
@@ -53,13 +55,23 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    private void getAllUsers(HttpServletResponse resp) throws IOException {
-        String json = objectMapper.listToJson(userService.getAll());
+    private void getAllUsers(HttpServletResponse resp, String pageSizeStr, String pageNumberStr) throws IOException {
+        int pageSize = checkIntParam(pageSizeStr) ? Integer.parseInt(pageSizeStr) : 20;
+        int pageNumber = checkIntParam(pageNumberStr) ? Integer.parseInt(pageNumberStr) : 1;
+        String json = objectMapper.listToJson(userService.getAll(pageNumber, pageSize));
         try (PrintWriter out = resp.getWriter()) {
             out.write(json);
             resp.setStatus(200);
         }
     }
+
+    private static boolean checkIntParam(String param) {
+        return param != null &&
+                !param.isEmpty() &&
+                StringUtil.isNumeric(param) &&
+                Integer.parseInt(param) > 0;
+    }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

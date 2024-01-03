@@ -115,7 +115,7 @@ class UserServiceImplTest {
         when(dao.findAllUsers(connection)).thenReturn(List.of(user));
         when(mapper.toUserDto(user)).thenReturn(userDto);
 
-        List<UserDto> result = userService.getAll();
+        List<UserDto> result = userService.getAll(1, 20);
 
         assertEquals(1, result.size());
         assertEquals(userDto, result.get(0));

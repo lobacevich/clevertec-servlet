@@ -93,10 +93,12 @@ public class UserServiceImpl implements UserService {
      * @return возвращает List dto всех сущностей из базы данных
      */
     @Override
-    public List<UserDto> getAll() {
+    public List<UserDto> getAll(int pageNumber, int pageSize) {
         try (Connection connection = dataSource.getConnection()) {
             return dao.findAllUsers(connection).stream()
                     .map(mapper::toUserDto)
+                    .skip((long) (pageNumber - 1) * pageSize)
+                    .limit(pageSize)
                     .toList();
         } catch (SQLException e) {
             throw new ConnectionException(CONNECTION_FAILED + e.getMessage());

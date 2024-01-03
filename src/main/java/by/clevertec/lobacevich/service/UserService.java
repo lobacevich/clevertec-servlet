@@ -14,5 +14,5 @@ public interface UserService {
 
     UserDto findUserById(Long id);
 
-    List<UserDto> getAll();
+    List<UserDto> getAll(int pageNumber, int pageSize);
 }
