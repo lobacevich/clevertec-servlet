@@ -7,7 +7,7 @@ import by.clevertec.lobacevich.cache.impl.LFUCache;
 public class LFUCacheFactory implements CacheFactory {
 
     @Override
-    public Cache createCache() {
-        return new LFUCache();
+    public Cache createCache(int capacity) {
+        return new LFUCache(capacity);
     }
 }

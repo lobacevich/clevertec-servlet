@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LFUCacheTest {
 
-    private final LFUCache cache = new LFUCache();
+    private final LFUCache cache = new LFUCache(3);
 
     @Test
     void getByIdShouldGiveUserById() {

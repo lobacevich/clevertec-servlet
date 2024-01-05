@@ -3,6 +3,7 @@ package by.clevertec.lobacevich.dao.impl;
 import by.clevertec.lobacevich.dao.UserDao;
 import by.clevertec.lobacevich.entity.User;
 import by.clevertec.lobacevich.exception.DataBaseException;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class UserDaoImpl implements UserDao {
 
-    private static final UserDaoImpl INSTANSE = new UserDaoImpl();
     private static final String CREATE_USER = "INSERT INTO users(firstname, lastname, date_of_birth, email) " +
             "VALUES(?, ?, ?, ?);";
     private static final String UPDATE_USER = "UPDATE users SET firstname=?, lastname=?, date_of_birth=?, " +
@@ -24,13 +25,6 @@ public class UserDaoImpl implements UserDao {
     private static final String DELETE_USER = "DELETE FROM users WHERE id=?;";
     private static final String GET_BY_ID = "SELECT * FROM users WHERE id=?";
     private static final String GET_ALL = "SELECT * FROM users ORDER BY id";
-
-    private UserDaoImpl() {
-    }
-
-    public static UserDaoImpl getInstance() {
-        return INSTANSE;
-    }
 
     @Override
     public User createUser(User user, Connection connection) {

@@ -2,7 +2,6 @@ package by.clevertec.lobacevich.cache.impl;
 
 import by.clevertec.lobacevich.cache.Cache;
 import by.clevertec.lobacevich.entity.User;
-import by.clevertec.lobacevich.util.YamlReader;
 
 import java.util.Deque;
 import java.util.HashMap;
@@ -17,16 +16,12 @@ public class LFUCache implements Cache {
     private int minFrequency;
     private int capacity;
 
-    public LFUCache() {
-        setCapacity();
+    public LFUCache(int capacity) {
+        this.capacity = capacity;
         this.map = new HashMap<>();
         this.frequency = new HashMap<>();
         this.frequencyList = new HashMap<>();
         minFrequency = 0;
-    }
-
-    private void setCapacity() {
-        this.capacity = Integer.parseInt(YamlReader.getData().get("Cache.capacity"));
     }
 
     @Override

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserDtoValidatorTest {
 
-    private final UserDtoValidator validator = UserDtoValidator.getINSTANCE();
+    private final UserDtoValidator validator = new UserDtoValidator();
     private final UserDto userDto = ValidatorTestData.getUserDto();
     private final UserDto userDtoIdNull = ValidatorTestData.getUserDtoIdNull();
 

@@ -3,23 +3,17 @@ package by.clevertec.lobacevich.validator.impl;
 import by.clevertec.lobacevich.dto.UserDto;
 import by.clevertec.lobacevich.exception.ValidationException;
 import by.clevertec.lobacevich.validator.Validator;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class UserDtoValidator implements Validator {
 
-    private static final UserDtoValidator INSTANCE = new UserDtoValidator();
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@" +
             "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
-    private UserDtoValidator() {
-    }
-
-    public static UserDtoValidator getINSTANCE() {
-        return INSTANCE;
-    }
 
     @Override
     public void validateToCreate(UserDto userDto) {

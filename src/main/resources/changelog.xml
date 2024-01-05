@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="Labatsevich Igor">
+        <createTable tableName="users">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="firstname" type="VARCHAR(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastname" type="VARCHAR(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_of_birth" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(31)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="Labatsevich Igor">
+        <insert tableName="users">
+            <column name="id" value="1"/>
+            <column name="firstname" value="Alex"/>
+            <column name="lastname" value="Murfhy"/>
+            <column name="date_of_birth" value="1997-05-17"/>
+            <column name="email" value="1234@gmail.com"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" value="2"/>
+            <column name="firstname" value="Nick"/>
+            <column name="lastname" value="Smith"/>
+            <column name="date_of_birth" value="1990-02-27"/>
+            <column name="email" value="1235@gmail.com"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" value="3"/>
+            <column name="firstname" value="Mike"/>
+            <column name="lastname" value="Carter"/>
+            <column name="date_of_birth" value="2001-12-06"/>
+            <column name="email" value="1236@gmail.com"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" value="4"/>
+            <column name="firstname" value="Bob"/>
+            <column name="lastname" value="Bond"/>
+            <column name="date_of_birth" value="1980-07-02"/>
+            <column name="email" value="1237@gmail.com"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

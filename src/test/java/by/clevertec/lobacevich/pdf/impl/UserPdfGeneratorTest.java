@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserPdfGeneratorTest {
 
-    private final PdfGenerator pdfGenerator = UserPdfGenerator.getInstance();
+    private final PdfGenerator pdfGenerator = new UserPdfGenerator();
 
     @Test
     void createPdfShouldCreateDirectory() {

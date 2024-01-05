@@ -10,6 +10,7 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.List;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.properties.TextAlignment;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,18 +19,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 
+@Component
 public class UserPdfGenerator implements PdfGenerator {
 
-    private static final UserPdfGenerator INSTANCE = new UserPdfGenerator();
     private static final String BACKGROUND_PATH = "/pdf/Clevertec_Template.pdf";
     private static final String OUTPUT_PATH_PART = "src/main/resources/pdf/";
-
-    private UserPdfGenerator() {
-    }
-
-    public static UserPdfGenerator getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public void createPdf(UserDto userDto) {

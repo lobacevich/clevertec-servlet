@@ -1,41 +1,27 @@
 package by.clevertec.lobacevich.aspectj;
 
 import by.clevertec.lobacevich.cache.Cache;
-import by.clevertec.lobacevich.cache.factory.CacheFactory;
-import by.clevertec.lobacevich.cache.factory.impl.LFUCacheFactory;
-import by.clevertec.lobacevich.cache.factory.impl.LRUCacheFactory;
 import by.clevertec.lobacevich.dto.UserDto;
 import by.clevertec.lobacevich.entity.User;
-import by.clevertec.lobacevich.exception.YamlReaderException;
-import by.clevertec.lobacevich.util.YamlReader;
 import by.clevertec.lobacevich.validator.Validator;
-import by.clevertec.lobacevich.validator.impl.UserDtoValidator;
+import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Aspect
+@Component
+@RequiredArgsConstructor
 public class AspectJConfig {
 
-    private final Cache cache = setCache();
-    private final Validator validator = UserDtoValidator.getINSTANCE();
-
-    private Cache setCache() {
-        CacheFactory cacheFactory;
-        if (YamlReader.getData().get("Cache.algorithm").equals("LRU")) {
-            cacheFactory = new LRUCacheFactory();
-        } else if (YamlReader.getData().get("Cache.algorithm").equals("LFU")) {
-            cacheFactory = new LFUCacheFactory();
-        } else {
-            throw new YamlReaderException("Can't get cache algorithm");
-        }
-        return cacheFactory.createCache();
-    }
+    private final Cache cache;
+    private final Validator validator;
 
     @Around("execution(* by.clevertec.lobacevich.dao.impl.UserDaoImpl.findUserById(..))")
-    public Object findById(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object daoFindById(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
         User cacheUser = cache.getById((Long) args[0]);
         if (cacheUser != null) {

@@ -2,7 +2,6 @@ package by.clevertec.lobacevich.cache.impl;
 
 import by.clevertec.lobacevich.cache.Cache;
 import by.clevertec.lobacevich.entity.User;
-import by.clevertec.lobacevich.util.YamlReader;
 
 import java.util.Deque;
 import java.util.HashMap;
@@ -13,16 +12,12 @@ public class LRUCache implements Cache {
 
     private final Map<Long, User> map;
     private final Deque<User> deque;
-    public int capacity;
+    private int capacity;
 
-    public LRUCache() {
-        setCapacity();
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
         this.map = new HashMap<>();
         this.deque = new LinkedList<>();
-    }
-
-    private void setCapacity() {
-        this.capacity = Integer.parseInt(YamlReader.getData().get("Cache.capacity"));
     }
 
     @Override

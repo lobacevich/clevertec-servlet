@@ -1,6 +1,11 @@
-Connection.driver: "org.postgresql.Driver"
-Connection.url: "jdbc:postgresql://localhost:5432/clevertec_user"
-Connection.username: "postgres"
-Connection.password: "root"
-Cache.capacity: "3"
-Cache.algorithm: "LRU"
+database:
+  driver: org.postgresql.Driver
+  url: jdbc:postgresql://localhost:5432/clevertec_user
+  username: postgres
+  password: root
+cache:
+  capacity: 3
+  algorithm: LRU
+liquibase:
+  should_run: true
+  changelog_path: classpath:changelog.xml

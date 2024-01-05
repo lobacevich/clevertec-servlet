@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class LRUCacheTest {
 
-    private final LRUCache cache = new LRUCache();
+    private final LRUCache cache = new LRUCache(3);
 
     @Test
     void getByIdShouldGiveUserById() {

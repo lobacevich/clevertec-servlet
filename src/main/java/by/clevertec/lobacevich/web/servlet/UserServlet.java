@@ -1,5 +1,6 @@
-package by.clevertec.lobacevich.servlet;
+package by.clevertec.lobacevich.web.servlet;
 
+import by.clevertec.lobacevich.config.SpringConfig;
 import by.clevertec.lobacevich.dto.UserDto;
 import by.clevertec.lobacevich.mapper.UserObjectMapper;
 import by.clevertec.lobacevich.mapper.impl.ObjectMapperJson;
@@ -8,7 +9,11 @@ import by.clevertec.lobacevich.pdf.impl.UserPdfGenerator;
 import by.clevertec.lobacevich.service.UserService;
 import by.clevertec.lobacevich.service.impl.UserServiceImpl;
 import com.itextpdf.styledxmlparser.jsoup.internal.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,16 +24,31 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.stream.Collectors;
 
-@WebServlet(urlPatterns = "/users")
+@WebServlet(name = "userServlet", urlPatterns = "/users")
+@Configurable
 public class UserServlet extends HttpServlet {
 
-    private final UserObjectMapper objectMapper = ObjectMapperJson.getINSTANCE();
-    private final UserService userService = UserServiceImpl.getInstance();
-    private final PdfGenerator pdfGenerator = UserPdfGenerator.getInstance();
+    @Autowired
+    private UserObjectMapper objectMapper;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PdfGenerator pdfGenerator;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+        objectMapper = context.getBean("objectMapperJson", ObjectMapperJson.class);
+        userService = context.getBean("userServiceImpl", UserServiceImpl.class);
+        pdfGenerator = context.getBean("userPdfGenerator", UserPdfGenerator.class);
+        context.close();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
         String userId = req.getParameter("id");
         String pageSize = req.getParameter("pagesize");
         String pageNumber = req.getParameter("page");
@@ -79,7 +99,6 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
         try (BufferedReader reader = req.getReader()) {
             String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
             UserDto userDto = objectMapper.toUserDto(json);
@@ -94,7 +113,6 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
         try (BufferedReader reader = req.getReader()) {
             String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
             UserDto userDto = objectMapper.toUserDto(json);
@@ -114,7 +132,6 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
         String userId = req.getParameter("id");
         if (userId == null ||
                 userId.isEmpty() ||

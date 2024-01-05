@@ -1,14 +1,13 @@
 package by.clevertec.lobacevich.service.impl;
 
 import by.clevertec.lobacevich.dao.UserDao;
-import by.clevertec.lobacevich.dao.impl.UserDaoImpl;
-import by.clevertec.lobacevich.db.ConnectionPool;
 import by.clevertec.lobacevich.dto.UserDto;
 import by.clevertec.lobacevich.entity.User;
 import by.clevertec.lobacevich.exception.ConnectionException;
 import by.clevertec.lobacevich.mapper.UserMapper;
-import by.clevertec.lobacevich.mapper.UserMapperImpl;
 import by.clevertec.lobacevich.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -16,20 +15,18 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UserServiceImpl implements UserService {
 
-    public static final UserServiceImpl INSTANCE = new UserServiceImpl();
-    private DataSource dataSource = ConnectionPool.getDataSource();
-    private UserDao dao = UserDaoImpl.getInstance();
-    private UserMapper mapper = new UserMapperImpl();
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private UserDao dao;
+
+    @Autowired
+    private UserMapper mapper;
     public static final String CONNECTION_FAILED = "Connection failed:";
-
-    private UserServiceImpl() {
-    }
-
-    public static UserServiceImpl getInstance() {
-        return INSTANCE;
-    }
 
     /***
      * Преобразует userDto в User и передает в слой dao для записи в базу данных
